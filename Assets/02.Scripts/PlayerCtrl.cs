@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    private Transform tr;//컴포넌트를 캐시 처리할 변수
+    [SerializeField]private Transform tr;//컴포넌트를 캐시 처리할 변수
+    public float moveSpeed = 10.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,10 @@ public class PlayerCtrl : MonoBehaviour
         transform.position += Vector3.forward * 1 * Time.deltaTime;
 
         3. transform컴포넌트의 캐시 처리.책 135p*/
-        tr.position += Vector3.forward * 1 * Time.deltaTime;
+        //tr.Translate(Vector3.forward * moveSpeed * v * Time.deltaTime);
+
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);//전후좌우 이동 방향 벡터계산
+        tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime);
+        //Translate(이동방향 * 이동속다 * time.deltatime)147p참조
     }
 }
