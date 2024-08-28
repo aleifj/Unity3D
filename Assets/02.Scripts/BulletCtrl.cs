@@ -12,7 +12,8 @@ public class BulletCtrl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * force);//총알의 전진 방향으로 힘을 가한다.
+        //총알의 전진 방향으로 힘을 가한다.
+        rb.AddForce(transform.forward * force);
     }
 
     // Update is called once per frame
