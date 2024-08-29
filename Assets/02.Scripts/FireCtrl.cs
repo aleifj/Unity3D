@@ -13,10 +13,15 @@ public class FireCtrl : MonoBehaviour
     public AudioClip fireSfx;//오디오 음원
 
     private new AudioSource audio;
+    private MeshRenderer muzzleFlash;
     // Start is called before the first frame update
     void Start()
     {
         audio = GetComponent<AudioSource>();
+        //FirePos 하위에 MuzzleFlash의 Material컴포넌트를 가져옴.
+        muzzleFlash = firePos.GetComponentInChildren<MeshRenderer>();
+        //enabled:활성화, 처음 시작할 때 비활성화.
+        muzzleFlash.enabled = false; 
     }
 
     // Update is called once per frame
@@ -33,5 +38,17 @@ public class FireCtrl : MonoBehaviour
         Instantiate(bullet, firePos.position, firePos.rotation);
         //총소리 발생, 1.0f초
         audio.PlayOneShot(fireSfx, 1.0f);
+        //총구 화염 효과 코루틴?함수 호출
+        StartCoroutine(ShowMuzzleFlash());
+    }
+    //총구 화염 효과 코루틴?함수 호출
+    IEnumerator ShowMuzzleFlash()
+    {
+        //MuzzleFlash활성화
+        muzzleFlash.enabled = true;
+        //0.2초 동안 대기(정지)하는 동안 메시지 루프로 제어권을 양보
+        yield return new WaitForSeconds(0.2f);
+        //muzzleFlash비활성화
+        muzzleFlash.enabled = false;
     }
 }
