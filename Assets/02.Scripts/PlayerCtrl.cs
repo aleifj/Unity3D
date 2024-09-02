@@ -10,12 +10,16 @@ public class PlayerCtrl : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float turnSpeed = 80.0f;
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
         tr = GetComponent<Transform>();//trancform 컴포넌트를 추출해 변수에 대입
         anim = GetComponent<Animation>();
 
         anim.Play("Idle");//애니메이션 실행.
+
+        turnSpeed = 0.0f;
+        yield return new WaitForSeconds(0.3f);
+        turnSpeed = 80.0f;
     }
 
     // Update is called once per frame
