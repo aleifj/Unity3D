@@ -25,6 +25,11 @@ public class MonsterCtrl : MonoBehaviour
     private NavMeshAgent agent;//네비게이션?
     private Animator anim;
 
+    //Animator parameter의 Hash값 추출,361p참조.
+    private readonly int hashTrace = Animator.StringToHash("IsTrace");
+    private readonly int hashAttack = Animator.StringToHash("IsAttack");
+    private readonly int hashHit = Animator.StringToHash("Hit");
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +48,15 @@ public class MonsterCtrl : MonoBehaviour
         //몬스터의 행동를 체크하는 코루틴 함수.
         StartCoroutine(MonsterAction());
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("BULLET"))
+        {
+            //충돌한 총알을 삭제/
+            Destroy(collision.gameObject);
+            anim.SetTrigger(hashHit);//피격리액션 실행.
+        }
+    }
     IEnumerator MonsterAction()
     {
         while (!isDie)
@@ -51,15 +65,20 @@ public class MonsterCtrl : MonoBehaviour
             {
                 case State.IDLE:
                     agent.isStopped = true;//추적중지.
-                    anim.SetBool("IsTrace", false);//Animator의 IsTrace변수를 false로 설정.
+                    anim.SetBool(hashTrace, false);//Animator의 IsTrace변수를 false로 설정.
                     break;
+
                 case State.ATTACK:
+                    anim.SetBool(hashAttack, true);
                     break;
+
                 case State.TRACE://CheckmonsterState()에서 TRACE값을 받아
                     agent.SetDestination(playerTr.position);//플래이어 위치를 Destination한다.
                     agent.isStopped = false;
-                    anim.SetBool("IsTrace", true);//Animator의 IsTrace변수를 true로 설정.
+                    anim.SetBool(hashTrace, true);//Animator의 IsTrace변수를 true로 설정.
+                    anim.SetBool(hashAttack, false);
                     break;
+
                 case State.DIE:
                     break;
             }

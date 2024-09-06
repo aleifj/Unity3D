@@ -652,6 +652,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4acb25f113100cd45b39ff528a4559db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
+  traceDist: 10
+  attackDist: 2
+  isDie: 0
 --- !u!195 &580157984
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -674,6 +678,20 @@ NavMeshAgent:
   m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &580157987
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580157982}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &617414721 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5211987841579771618, guid: 44b2743586b1dbb48966ad10d51b5a34, type: 3}
