@@ -28,9 +28,9 @@ public class MonsterCtrl : MonoBehaviour
     //Animator parameter의 Hash값 추출,361p참조.
     private readonly int hashTrace = Animator.StringToHash("IsTrace");
     private readonly int hashAttack = Animator.StringToHash("IsAttack");
-    private readonly int hashHit = Animator.StringToHash("Hit");
+    private readonly int hashHit = Animator.StringToHash("Hit");  
+    private GameObject bloodEffect;//혈흔효과prefab
 
-    // Start is called before the first frame update
     void Start()
     {
         monsterTr = GetComponent<Transform>();
@@ -43,6 +43,8 @@ public class MonsterCtrl : MonoBehaviour
         //네비게이션의 목적지는 player의 위치값.
         //agent.destination = playerTr.position;
 
+        //bloodEffect Prefab불러오기
+        bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
         //몬스터의 상태를 체크하는 코루틴 함수.
         StartCoroutine(CheckmonsterState());
         //몬스터의 행동를 체크하는 코루틴 함수.
@@ -55,7 +57,16 @@ public class MonsterCtrl : MonoBehaviour
             //충돌한 총알을 삭제/
             Destroy(collision.gameObject);
             anim.SetTrigger(hashHit);//피격리액션 실행.
+
+            Vector3 pos = collision.GetContact(0).point;//총알의 충돌 지점
+            Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);//총알의 충돌 지점의 법선벡터
+            ShowBloodEffect(pos, rot);//혈흔효과이펙트 함수 호출
         }
+    }
+    void ShowBloodEffect(Vector3 pos, Quaternion rot)
+    {//혈흔 효과 생성
+        GameObject blood = Instantiate<GameObject>(bloodEffect, pos, rot, monsterTr);
+        Destroy(blood, 1.0f);
     }
     IEnumerator MonsterAction()
     {
@@ -122,7 +133,6 @@ public class MonsterCtrl : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         

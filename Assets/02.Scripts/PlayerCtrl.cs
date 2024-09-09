@@ -9,9 +9,13 @@ public class PlayerCtrl : MonoBehaviour
 
     public float moveSpeed = 10.0f;
     public float turnSpeed = 80.0f;
-    // Start is called before the first frame update
+
+    private readonly float initHP = 100.0f;//초기HP 값
+    public float currHP;//현재HP 값
     IEnumerator Start()
     {
+        currHP = initHP;//HP초기화
+        
         tr = GetComponent<Transform>();//trancform 컴포넌트를 추출해 변수에 대입
         anim = GetComponent<Animation>();
 
@@ -29,19 +33,16 @@ public class PlayerCtrl : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         float r = Input.GetAxis("Mouse X");//카메라의 회전을 마우스의 X, Y 입력 값을 받아오는 것
 
-
         /*1. transform 컴포넌트의 위치를 변경.
          transform.position += new Vector3(0, 0, 1);
-
        2. 정규화 벡터를 사용한 코드. 왜 이놈은 new안쓰냐?
         transform.position += Vector3.forward * 1 * Time.deltaTime;
-
          3. transform컴포넌트의 캐시 처리.책 135p
        tr.Translate(Vector3.forward * moveSpeed * v * Time.deltaTime);*/
 
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);//전후좌우 이동 방향 벡터계산
         tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime);
-        //Translate(이동방향 * 이동속도 * time.deltatime)147p참조
+        //Translate(이동방향 * 이동속도 * time.deltatime)147p참고
         tr.Rotate(Vector3.up * turnSpeed * Time.deltaTime * r);
 
         PlayerAnim(h, v);//캐릭터 애니메이션 설정.
@@ -68,5 +69,21 @@ public class PlayerCtrl : MonoBehaviour
         {//정지
             anim.CrossFade("Idle", 0.25f);
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(currHP >= 0.0f && other.CompareTag("PUNCH"))
+        {//충돌한 collider가 몬스터의 PUNCH라면 
+            currHP -= 10.0f;//현재HP 10차감
+            Debug.Log($"Player HP = {currHP / initHP}");
+            if(currHP <= 0.0f)
+            {
+                PlayerDie();
+            }
+        }
+    }
+    void PlayerDie()
+    {
+        Debug.Log("너 죽음");
     }
 }
