@@ -28,7 +28,10 @@ public class MonsterCtrl : MonoBehaviour
     //Animator parameter의 Hash값 추출,361p참조.
     private readonly int hashTrace = Animator.StringToHash("IsTrace");
     private readonly int hashAttack = Animator.StringToHash("IsAttack");
-    private readonly int hashHit = Animator.StringToHash("Hit");  
+    private readonly int hashHit = Animator.StringToHash("Hit");
+    private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
+    private readonly int hashSpeed = Animator.StringToHash("Speed");
+
     private GameObject bloodEffect;//혈흔효과prefab
 
     void Start()
@@ -131,6 +134,18 @@ public class MonsterCtrl : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, attackDist);
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject.name);
+    }
+    private void OnPlayerDie()
+    {
+        StopAllCoroutines();//몬스터의 상태를 체크하는 코루틴 함수를 모두 정지.
+
+        agent.isStopped = true;//몬스터가 위치추적 정지.
+        anim.SetFloat(hashSpeed, Random.Range(0.8f, 1.2f));//애니메이션 재생속도 조절.
+        anim.SetTrigger(hashPlayerDie);//티배깅 애니메이션 실행.
     }
 
     void Update()
