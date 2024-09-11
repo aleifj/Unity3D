@@ -12,6 +12,10 @@ public class PlayerCtrl : MonoBehaviour
 
     private readonly float initHP = 100.0f;//초기HP 값
     public float currHP;//현재HP 값
+
+    public delegate void PlayerDieHandler();//델리게이트 선언.
+    public static event PlayerDieHandler OnPlayerDie;//이벤트 선언.
+
     IEnumerator Start()
     {
         currHP = initHP;//HP초기화
@@ -26,7 +30,6 @@ public class PlayerCtrl : MonoBehaviour
         turnSpeed = 80.0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float h = Input.GetAxis("Horizontal");
@@ -86,11 +89,11 @@ public class PlayerCtrl : MonoBehaviour
     {
         Debug.Log("너 죽음");
 
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("MONSTER");//MONSTER태그를 가진 모든 게임오브젝트를 배열로 찾음.
-
+        /*GameObject[] monsters = GameObject.FindGameObjectsWithTag("MONSTER");//MONSTER태그를 가진 모든 게임오브젝트를 배열로 찾음.
         foreach(GameObject monster in monsters)
         {//모든 몬스터의 OnPlayerDie함수를 순자적으로 호출.
             monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
-        }
+        }*/
+        OnPlayerDie();//주인공 사망 이벤트 호출(발생).
     }
 }

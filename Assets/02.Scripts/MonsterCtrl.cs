@@ -24,6 +24,7 @@ public class MonsterCtrl : MonoBehaviour
     private Transform playerTr;
     private NavMeshAgent agent;//네비게이션?
     private Animator anim;
+    private GameObject bloodEffect;//혈흔효과prefab
 
     //Animator parameter의 Hash값 추출,361p참조.
     private readonly int hashTrace = Animator.StringToHash("IsTrace");
@@ -31,8 +32,18 @@ public class MonsterCtrl : MonoBehaviour
     private readonly int hashHit = Animator.StringToHash("Hit");
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
     private readonly int hashSpeed = Animator.StringToHash("Speed");
+    private readonly int hashDie = Animator.StringToHash("Die");
 
-    private GameObject bloodEffect;//혈흔효과prefab
+    private int hp = 100;
+
+    private void OnEnable()
+    {//스크립트가 활성화 될 때 마다 호출되는 함수.이벤트 연결 할거임.
+        PlayerCtrl.OnPlayerDie += this.OnPlayerDie;//이벤트 발생 시 수행할 함수 연결.this생략 가능.
+    }
+    private void OnDisable()
+    {//스크립트가 비활성화 될 때 마다 호출되는 함수.이벤트 연결 끊을거임.
+        PlayerCtrl.OnPlayerDie -= this.OnPlayerDie;//연결된 함수 해제.this생략 가능.
+    }
 
     void Start()
     {
@@ -64,6 +75,12 @@ public class MonsterCtrl : MonoBehaviour
             Vector3 pos = collision.GetContact(0).point;//총알의 충돌 지점
             Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);//총알의 충돌 지점의 법선벡터
             ShowBloodEffect(pos, rot);//혈흔효과이펙트 함수 호출
+
+            hp -= 10;
+            if (hp <= 0)
+            {
+                state = State.DIE;
+            }
         }
     }
     void ShowBloodEffect(Vector3 pos, Quaternion rot)
@@ -94,6 +111,15 @@ public class MonsterCtrl : MonoBehaviour
                     break;
 
                 case State.DIE:
+                    isDie = true;
+                    agent.isStopped = true;
+                    anim.SetTrigger(hashDie);
+                    GetComponent<CapsuleCollider>().enabled = false;//몬스터의 Collider Component 비활성화.
+                    SphereCollider[] sc = this.GetComponentsInChildren<SphereCollider>();//몬스터 공격수단 비활성화.
+                    foreach(var item in sc)
+                    {
+                        item.enabled = false;
+                    }
                     break;
             }
             yield return new WaitForSeconds(0.3f);
@@ -105,6 +131,8 @@ public class MonsterCtrl : MonoBehaviour
         {
             //0.3초 간 중지(대기)하는 동안 제어권을 메시지 루프에 양보.
             yield return new WaitForSeconds(0.3f);
+
+            if (state == State.DIE) yield break;
             //몬스터와 플레이어 사이의 거리 측정
             float distance = Vector3.Distance(playerTr.position, monsterTr.position);
 
@@ -146,10 +174,5 @@ public class MonsterCtrl : MonoBehaviour
         agent.isStopped = true;//몬스터가 위치추적 정지.
         anim.SetFloat(hashSpeed, Random.Range(0.8f, 1.2f));//애니메이션 재생속도 조절.
         anim.SetTrigger(hashPlayerDie);//티배깅 애니메이션 실행.
-    }
-
-    void Update()
-    {
-        
     }
 }
