@@ -506,10 +506,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 63.3
   m_fontSizeBase: 100
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -640,19 +640,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1238050926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2046054480}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: "\uC804\uB2EC\uD560 \uBB38\uC790\uC5F4\uC744 \uC785\uB825."
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1238050926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1264,6 +1252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ea34727cf75944d89d3f2e74744aa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startButton: {fileID: 1238050925}
+  optionButton: {fileID: 1582540591}
+  shopButton: {fileID: 1748728353}
 --- !u!4 &2046054481
 Transform:
   m_ObjectHideFlags: 0
