@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class FollowCam : MonoBehaviour
 {
-    public Transform targetTr;//µû¶ó°¡¾ßÇÒ ´ë»óÀ» ¿¬°á ÇÒ º¯¼ö.
-    private Transform camTr;//Ä«¸Ş¶ó ÀÚ½ÅÀÇ transform.
+    public Transform targetTr;//ë”°ë¼ê°€ì•¼í•  ëŒ€ìƒì„ ì—°ê²° í•  ë³€ìˆ˜.
+    private Transform camTr;//ì¹´ë©”ë¼ ìì‹ ì˜ transform.
 
-    [Range(2.0f, 20.0f)] public float dictance = 10.0f;//µû¶ó°¥ ´ë»óÀ¸·ÎºÎÅÍ ¶³¾îÁú °Å¸®
-    [Range(0.0f, 10.0f)] public float height = 2.0f;//YÃàÀ¸·Î ÀÌµ¿ÇÒ ³ôÀÌ
+    [Range(2.0f, 20.0f)] public float dictance = 10.0f;//ë”°ë¼ê°ˆ ëŒ€ìƒìœ¼ë¡œë¶€í„° ë–¨ì–´ì§ˆ ê±°ë¦¬
+    [Range(0.0f, 10.0f)] public float height = 2.0f;//Yì¶•ìœ¼ë¡œ ì´ë™í•  ë†’ì´
 
-    public float damping = 10.0f;//¹İÀÀ ¼Óµµ
-    public float targetOffset = 2.0f;//Ä«¸Ş¶óLookAtÀÇ Offset°ª
-    private Vector3 velocity = Vector3.zero;//smoothDamp¿¡¼­ »ç¿ëÇÒ º¯¼ö.
+    public float damping = 10.0f;//ë°˜ì‘ ì†ë„
+    public float targetOffset = 2.0f;//ì¹´ë©”ë¼LookAtì˜ Offsetê°’
+    private Vector3 velocity = Vector3.zero;//smoothDampì—ì„œ ì‚¬ìš©í•  ë³€ìˆ˜.
     // Start is called before the first frame update
     void Start()
     {
@@ -22,22 +22,22 @@ public class FollowCam : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {   
-     //ÃßÀûÇØ¾ß ÇÒ ´ë»óÀÇ µÚ·Î distance¸¸Å­ ÀÌµ¿
-     //³ôÀÌ¸¦ height¸¸Å­ ÀÌµ¿.
+     //ì¶”ì í•´ì•¼ í•  ëŒ€ìƒì˜ ë’¤ë¡œ distanceë§Œí¼ ì´ë™
+     //ë†’ì´ë¥¼ heightë§Œí¼ ì´ë™.
         Vector3 pos = targetTr.position + (-targetTr.forward * dictance) + (Vector3.up * height);
-        //Ä«¸Ş¶ó À§Ä¡ = Å¸°ÙÀ§Ä¡ + (Å¸±êÀÇ µÚÂÊ ¹æÇâ * ¶³¾îÁú °Å¸®) + (YÃà ¹æÇâ * ³ôÀÌ);
+        //ì¹´ë©”ë¼ ìœ„ì¹˜ = íƒ€ê²Ÿìœ„ì¹˜ + (íƒ€ê¹ƒì˜ ë’¤ìª½ ë°©í–¥ * ë–¨ì–´ì§ˆ ê±°ë¦¬) + (Yì¶• ë°©í–¥ * ë†’ì´);
 
-        /*±¸¸é¼±Çü º¸°£ÇÔ¼ö¸¦ »ç¿ëÇØ ºÎµå·´°Ô À§Ä¡¸¦ º¯°æ
-        camTr.position = Vector3.Slerp(camTr.position,                      ½ÃÀÛÀ§Ä¡
-                                                  pos,                      ¸ñÇ¥À§Ä¡            
-                                                  Time.deltaTime * damping);½Ã°£ t*/
+        /*êµ¬ë©´ì„ í˜• ë³´ê°„í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ ë¶€ë“œëŸ½ê²Œ ìœ„ì¹˜ë¥¼ ë³€ê²½
+        camTr.position = Vector3.Slerp(camTr.position,                      ì‹œì‘ìœ„ì¹˜
+                                                  pos,                      ëª©í‘œìœ„ì¹˜            
+                                                  Time.deltaTime * damping);ì‹œê°„ t*/
 
-        //SmoothDamp¸¦ ÀÌ¿ëÇÑ À§Ä¡ º¸°£
-        camTr.position = Vector3.SmoothDamp(camTr.position,//½ÃÀÛÀ§Ä¡
-                                            pos,           //¸ñÇ¥À§Ä¡
-                                            ref velocity,  //ÇöÀç¼Óµµ
-                                            damping);      //¸ñÇ¥ À§Ä¡±îÁö µµ´ŞÇÒ ½Ã°£.
+        //SmoothDampë¥¼ ì´ìš©í•œ ìœ„ì¹˜ ë³´ê°„
+        camTr.position = Vector3.SmoothDamp(camTr.position,//ì‹œì‘ìœ„ì¹˜
+                                            pos,           //ëª©í‘œìœ„ì¹˜
+                                            ref velocity,  //í˜„ì¬ì†ë„
+                                            damping);      //ëª©í‘œ ìœ„ì¹˜ê¹Œì§€ ë„ë‹¬í•  ì‹œê°„.
 
-        camTr.LookAt(targetTr.position + (targetTr.up * targetOffset));//camera¸¦ ÇÇ¹ş ÁÂÇ¥¸¦ ÇâÇØ È¸Àü.
+        camTr.LookAt(targetTr.position + (targetTr.up * targetOffset));//cameraë¥¼ í”¼ë²— ì¢Œí‘œë¥¼ í–¥í•´ íšŒì „.
     }
 }

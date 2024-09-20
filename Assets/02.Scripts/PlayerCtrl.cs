@@ -5,28 +5,28 @@ using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    private Transform tr;//ÄÄÆ÷³ÍÆ®¸¦ Ä³½Ã Ã³¸®ÇÒ º¯¼ö
+    private Transform tr;//ì»´í¬ë„ŒíŠ¸ë¥¼ ìºì‹œ ì²˜ë¦¬í•  ë³€ìˆ˜
     private Animation anim;
 
     public float moveSpeed = 10.0f;
     public float turnSpeed = 80.0f;
 
-    private readonly float initHP = 100.0f;//ÃÊ±âHP °ª
-    public float currHP;//ÇöÀçHP °ª
-    private Image hpBar;//HPBar¿¬°á ÇÒ º¯¼ö.
+    private readonly float initHP = 100.0f;//ì´ˆê¸°HP ê°’
+    public float currHP;//í˜„ì¬HP ê°’
+    private Image hpBar;//HPBarì—°ê²° í•  ë³€ìˆ˜.
 
-    public delegate void PlayerDieHandler();//µ¨¸®°ÔÀÌÆ® ¼±¾ğ.
-    public static event PlayerDieHandler OnPlayerDie;//ÀÌº¥Æ® ¼±¾ğ.
+    public delegate void PlayerDieHandler();//ë¸ë¦¬ê²Œì´íŠ¸ ì„ ì–¸.
+    public static event PlayerDieHandler OnPlayerDie;//ì´ë²¤íŠ¸ ì„ ì–¸.
 
     IEnumerator Start()
     {
-        hpBar = GameObject.FindGameObjectWithTag("HP_BAR")?.GetComponent<Image>();//HpBar¿¬°á,? ¿¬»êÀÚ. 487pÂü°í.
-        currHP = initHP;//HPÃÊ±âÈ­
+        hpBar = GameObject.FindGameObjectWithTag("HP_BAR")?.GetComponent<Image>();//HpBarì—°ê²°,? ì—°ì‚°ì. 487pì°¸ê³ .
+        currHP = initHP;//HPì´ˆê¸°í™”
         
-        tr = GetComponent<Transform>();//trancform ÄÄÆ÷³ÍÆ®¸¦ ÃßÃâÇØ º¯¼ö¿¡ ´ëÀÔ
+        tr = GetComponent<Transform>();//trancform ì»´í¬ë„ŒíŠ¸ë¥¼ ì¶”ì¶œí•´ ë³€ìˆ˜ì— ëŒ€ì…
         anim = GetComponent<Animation>();
 
-        anim.Play("Idle");//¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà.
+        anim.Play("Idle");//ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰.
 
         turnSpeed = 0.0f;
         yield return new WaitForSeconds(0.3f);
@@ -37,50 +37,50 @@ public class PlayerCtrl : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        float r = Input.GetAxis("Mouse X");//Ä«¸Ş¶óÀÇ È¸ÀüÀ» ¸¶¿ì½ºÀÇ X, Y ÀÔ·Â °ªÀ» ¹Ş¾Æ¿À´Â °Í
+        float r = Input.GetAxis("Mouse X");//ì¹´ë©”ë¼ì˜ íšŒì „ì„ ë§ˆìš°ìŠ¤ì˜ X, Y ì…ë ¥ ê°’ì„ ë°›ì•„ì˜¤ëŠ” ê²ƒ
 
-        /*1. transform ÄÄÆ÷³ÍÆ®ÀÇ À§Ä¡¸¦ º¯°æ.
+        /*1. transform ì»´í¬ë„ŒíŠ¸ì˜ ìœ„ì¹˜ë¥¼ ë³€ê²½.
          transform.position += new Vector3(0, 0, 1);
-       2. Á¤±ÔÈ­ º¤ÅÍ¸¦ »ç¿ëÇÑ ÄÚµå. ¿Ö ÀÌ³ğÀº new¾È¾²³Ä?
+       2. ì •ê·œí™” ë²¡í„°ë¥¼ ì‚¬ìš©í•œ ì½”ë“œ. ì™œ ì´ë†ˆì€ newì•ˆì“°ëƒ?
         transform.position += Vector3.forward * 1 * Time.deltaTime;
-         3. transformÄÄÆ÷³ÍÆ®ÀÇ Ä³½Ã Ã³¸®.Ã¥ 135p
+         3. transformì»´í¬ë„ŒíŠ¸ì˜ ìºì‹œ ì²˜ë¦¬.ì±… 135p
        tr.Translate(Vector3.forward * moveSpeed * v * Time.deltaTime);*/
 
-        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);//ÀüÈÄÁÂ¿ì ÀÌµ¿ ¹æÇâ º¤ÅÍ°è»ê
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);//ì „í›„ì¢Œìš° ì´ë™ ë°©í–¥ ë²¡í„°ê³„ì‚°
         tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime);
-        //Translate(ÀÌµ¿¹æÇâ * ÀÌµ¿¼Óµµ * time.deltatime)147pÂü°í
+        //Translate(ì´ë™ë°©í–¥ * ì´ë™ì†ë„ * time.deltatime)147pì°¸ê³ 
         tr.Rotate(Vector3.up * turnSpeed * Time.deltaTime * r);
 
-        PlayerAnim(h, v);//Ä³¸¯ÅÍ ¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤.
+        PlayerAnim(h, v);//ìºë¦­í„° ì• ë‹ˆë©”ì´ì…˜ ì„¤ì •.
     }
     void PlayerAnim(float h, float v)
-    {//Å°º¸µå ÀÔ·Â°ªÀ» ±âÁØÀ¸·Î µ¿ÀÛ ÇÒ ¾Ö´Ï¸ŞÀÌ¼Ç ¼öÇà
+    {//í‚¤ë³´ë“œ ì…ë ¥ê°’ì„ ê¸°ì¤€ìœ¼ë¡œ ë™ì‘ í•  ì• ë‹ˆë©”ì´ì…˜ ìˆ˜í–‰
         if (v >= 0.1f)
-        {//ÀüÁø
+        {//ì „ì§„
             anim.CrossFade("RunF", 0.25f);
         }
         else if (v <= -0.1f)
-        {//ÈÄÁø
+        {//í›„ì§„
             anim.CrossFade("RunB", 0.25f);
         }
         else if (h >= 0.1f)
-        {//¿ì
+        {//ìš°
             anim.CrossFade("RunR", 0.25f);
         }
         else if (h <= -0.1f)
-        {//ÁÂ
+        {//ì¢Œ
             anim.CrossFade("RunL", 0.25f);
         }
         else 
-        {//Á¤Áö
+        {//ì •ì§€
             anim.CrossFade("Idle", 0.25f);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if(currHP >= 0.0f && other.CompareTag("PUNCH"))
-        {//Ãæµ¹ÇÑ collider°¡ ¸ó½ºÅÍÀÇ PUNCH¶ó¸é 
-            currHP -= 10.0f;//ÇöÀçHP 10Â÷°¨
+        {//ì¶©ëŒí•œ colliderê°€ ëª¬ìŠ¤í„°ì˜ PUNCHë¼ë©´ 
+            currHP -= 10.0f;//í˜„ì¬HP 10ì°¨ê°
             DisplayHealth();
             Debug.Log($"Player HP = {currHP / initHP}");
             if(currHP <= 0.0f)
@@ -91,14 +91,14 @@ public class PlayerCtrl : MonoBehaviour
     }
     void PlayerDie()
     {
-        Debug.Log("³Ê Á×À½");
+        Debug.Log("ë„ˆ ì£½ìŒ");
 
-        /*GameObject[] monsters = GameObject.FindGameObjectsWithTag("MONSTER");//MONSTERÅÂ±×¸¦ °¡Áø ¸ğµç °ÔÀÓ¿ÀºêÁ§Æ®¸¦ ¹è¿­·Î Ã£À½.
+        /*GameObject[] monsters = GameObject.FindGameObjectsWithTag("MONSTER");//MONSTERíƒœê·¸ë¥¼ ê°€ì§„ ëª¨ë“  ê²Œì„ì˜¤ë¸Œì íŠ¸ë¥¼ ë°°ì—´ë¡œ ì°¾ìŒ.
         foreach(GameObject monster in monsters)
-        {//¸ğµç ¸ó½ºÅÍÀÇ OnPlayerDieÇÔ¼ö¸¦ ¼øÀÚÀûÀ¸·Î È£Ãâ.
+        {//ëª¨ë“  ëª¬ìŠ¤í„°ì˜ OnPlayerDieí•¨ìˆ˜ë¥¼ ìˆœìì ìœ¼ë¡œ í˜¸ì¶œ.
             monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
         }*/
-        OnPlayerDie();//ÁÖÀÎ°ø »ç¸Á ÀÌº¥Æ® È£Ãâ(¹ß»ı).
+        OnPlayerDie();//ì£¼ì¸ê³µ ì‚¬ë§ ì´ë²¤íŠ¸ í˜¸ì¶œ(ë°œìƒ).
     }
     void DisplayHealth()
     {

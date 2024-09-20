@@ -6,16 +6,16 @@ public class RemoveBullet : MonoBehaviour
 {
     public GameObject sparkEffect;
     private void OnCollisionEnter(Collision collision)
-    {//Ãæµ¹ÀÌ ½ÃÀÛÇÒ ¶§ ¹ß»ıÇÏ´Â ÀÌº¥Æ®
+    {//ì¶©ëŒì´ ì‹œì‘í•  ë•Œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
         if(collision.collider.CompareTag("BULLET"))
-        {/* Ãæµ¹ÇÑ °ÔÀÓ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×°ª ºñ±³*/
-            //Ã¹ ¹øÂ° Ãæµ¹ ÁöÁ¡ÀÇ Á¤º¸ ÃßÃâ.
+        {/* ì¶©ëŒí•œ ê²Œì„ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ê°’ ë¹„êµ*/
+            //ì²« ë²ˆì§¸ ì¶©ëŒ ì§€ì ì˜ ì •ë³´ ì¶”ì¶œ.
             ContactPoint cp = collision.GetContact(0);
-            //Ãæµ¹ÇÑ ÃÑ¾ËÀÇ ¹ı¼± º¤ÅÍ¸¦ ÄõÅÍ´Ï¾ğ Å¸ÀÔÀ¸·Î º¯È¯.
+            //ì¶©ëŒí•œ ì´ì•Œì˜ ë²•ì„  ë²¡í„°ë¥¼ ì¿¼í„°ë‹ˆì–¸ íƒ€ì…ìœ¼ë¡œ ë³€í™˜.
             Quaternion rot = Quaternion.LookRotation(-cp.normal);
-            //½ºÆÄÅ© ÆÄÆ¼Å¬ µ¿Àû »ı¼º
+            //ìŠ¤íŒŒí¬ íŒŒí‹°í´ ë™ì  ìƒì„±
             GameObject spark = Instantiate(sparkEffect, cp.point, rot);
-            //Ãæµ¹ ÈÄ »èÁ¦
+            //ì¶©ëŒ í›„ ì‚­ì œ
             Destroy(collision.gameObject);
             Destroy(spark, 0.5f);
         }

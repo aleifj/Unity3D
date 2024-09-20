@@ -14,12 +14,12 @@ public class UIManager : MonoBehaviour
     private UnityAction action;
     void Start()
     {
-        //UnityActionÀ» »ç¿ëÇÑ ÀÌº¥Æ® ¿¬°á ¹æ½Ä.
+        //UnityActionì„ ì‚¬ìš©í•œ ì´ë²¤íŠ¸ ì—°ê²° ë°©ì‹.
         action = () => OnButtonClick(startButton.name);
         startButton.onClick.AddListener(action);
-        //¹«¸í¸Þ¼­µå¸¦ »ç¿ëÇÑ ÀÌº¥Æ® ¿¬°á ¹æ½Ä, ¼¼¹ÌÅ¬·Ð ÀÌ»óÇÑµ¥ µé¾î°¡³×...
+        //ë¬´ëª…ë©”ì„œë“œë¥¼ ì‚¬ìš©í•œ ì´ë²¤íŠ¸ ì—°ê²° ë°©ì‹, ì„¸ë¯¸í´ë¡  ì´ìƒí•œë° ë“¤ì–´ê°€ë„¤...
         optionButton.onClick.AddListener(delegate { OnButtonClick(optionButton.name); });
-        //¶÷´Ù½ÄÀ» »ç¿ëÇÑ ÀÌº¥Æ® ¿¬°á ¹æ½Ä.464p Âü°í
+        //ëžŒë‹¤ì‹ì„ ì‚¬ìš©í•œ ì´ë²¤íŠ¸ ì—°ê²° ë°©ì‹.464p ì°¸ê³ 
         shopButton.onClick.AddListener(() => OnButtonClick(shopButton.name));
     }
 

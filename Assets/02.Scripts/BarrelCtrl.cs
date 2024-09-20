@@ -8,8 +8,8 @@ public class BarrelCtrl : MonoBehaviour
 {
     #region Public
     public GameObject expEffect;
-    public Texture[] textures;//¹«ÀÛÀ§ ÅØ½ºÃÄ ¹è¿­ Àû¿ë.
-    public float radius = 10.0f;//Æø¹ß¹İ°æ
+    public Texture[] textures;//ë¬´ì‘ìœ„ í…ìŠ¤ì³ ë°°ì—´ ì ìš©.
+    public float radius = 10.0f;//í­ë°œë°˜ê²½
     #endregion
 
     #region private
@@ -18,49 +18,49 @@ public class BarrelCtrl : MonoBehaviour
     Rigidbody rb;
     #endregion
 
-    int hitCount = 0;//ÃÑ¾Ë ¸ÂÀº È½¼ö ´©Àû½ÃÅ³ º¯¼ö
+    int hitCount = 0;//ì´ì•Œ ë§ì€ íšŸìˆ˜ ëˆ„ì ì‹œí‚¬ ë³€ìˆ˜
     // Start is called before the first frame update
     void Start()
     {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
-        //ÇÏÀ§¿¡ ÀÖ´Â MeshRendererÄÄÆ÷³ÍÆ® ÃßÃâ
+        //í•˜ìœ„ì— ìˆëŠ” MeshRendererì»´í¬ë„ŒíŠ¸ ì¶”ì¶œ
         rendere = GetComponentInChildren<MeshRenderer>();
 
-        int idx = Random.Range(0, textures.Length);//³­¼ö ¹ß»ı
-        rendere.material.mainTexture = textures[idx];//ÅØ½ºÅÍ ÁöÁ¤
+        int idx = Random.Range(0, textures.Length);//ë‚œìˆ˜ ë°œìƒ
+        rendere.material.mainTexture = textures[idx];//í…ìŠ¤í„° ì§€ì •
     }
     /// <summary>
-    /// Ãæµ¹ ½Ã ¹ß»ıÇÏ´Â Äİ¹éÇÔ¼ö
+    /// ì¶©ëŒ ì‹œ ë°œìƒí•˜ëŠ” ì½œë°±í•¨ìˆ˜
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
-    {//ÃÑ¾ËÀÌ µå·³Åë¿¡ Ãæµ¹½Ã
+    {//ì´ì•Œì´ ë“œëŸ¼í†µì— ì¶©ëŒì‹œ
         if (collision.collider.CompareTag("BULLET"))
         {
             if(++hitCount == 3)
-            {//ÀüÄ¡¿¬»êÀÚ
+            {//ì „ì¹˜ì—°ì‚°ì
                 ExpBarrel();
             }
         }
     }
     void ExpBarrel()
     {
-        //Æø¹ß È¿°ú ÆÄÆ¼Å¬ »ı¼º
+        //í­ë°œ íš¨ê³¼ íŒŒí‹°í´ ìƒì„±
         GameObject exp = Instantiate(expEffect, tr.position, Quaternion.identity);
         Destroy(exp, 5.0f);
-        //rigidbodyÄÄÆ÷³ÍÆ®ÀÇ mass¸¦ 1.0À¸·Î ¼öÁ¤ÇØ ¹«°Ô¸¦ °¡º±°Ô ÇÔ
+        //rigidbodyì»´í¬ë„ŒíŠ¸ì˜ massë¥¼ 1.0ìœ¼ë¡œ ìˆ˜ì •í•´ ë¬´ê²Œë¥¼ ê°€ë³ê²Œ í•¨
         /*rb.mass = 1.0f;
-        rb.AddForce(Vector3.up * 1500.0f);*///ÆøÆÈÇÒ ¶§ À§·Î ¼Ú±¸Ä§
+        rb.AddForce(Vector3.up * 1500.0f);*///í­íŒ”í•  ë•Œ ìœ„ë¡œ ì†Ÿêµ¬ì¹¨
         IndirectDamage(tr.position);
         Destroy(gameObject, 3.0f);
     }
-    Collider[] colls = new Collider[10];//°á°ú°ªÀ» ÀúÀåÇÒ Á¤Àû ¹è¿­À» ¹Ì¸® ¼±¾ğ.
+    Collider[] colls = new Collider[10];//ê²°ê³¼ê°’ì„ ì €ì¥í•  ì •ì  ë°°ì—´ì„ ë¯¸ë¦¬ ì„ ì–¸.
     void IndirectDamage(Vector3 pos)
     {
-        //Collider[] colls = Physics.OverlapSphere(pos, radius, 1 << 3);//ÁÖº¯¿¡ ÀÖ´Â µå·³Åë ¸ğµÎ ÃßÃâ(°¡ºñÁö ÄÃ·º¼ÇÀÌ ¹ß»ı)
-                                                                      //ºñÆ®¿¬»ê? 3¹ø ·¹ÀÌ¾î¶ó´Â ÀÇ¹Ì
-        Physics.OverlapSphereNonAlloc(pos, radius, colls, 1 << 3);//°¡ºñÁö ÄÃ·º¼Ç ¹ß»ı ¾ÈÇÔ
+        //Collider[] colls = Physics.OverlapSphere(pos, radius, 1 << 3);//ì£¼ë³€ì— ìˆëŠ” ë“œëŸ¼í†µ ëª¨ë‘ ì¶”ì¶œ(ê°€ë¹„ì§€ ì»¬ë ‰ì…˜ì´ ë°œìƒ)
+                                                                      //ë¹„íŠ¸ì—°ì‚°? 3ë²ˆ ë ˆì´ì–´ë¼ëŠ” ì˜ë¯¸
+        Physics.OverlapSphereNonAlloc(pos, radius, colls, 1 << 3);//ê°€ë¹„ì§€ ì»¬ë ‰ì…˜ ë°œìƒ ì•ˆí•¨
 
         foreach (var coll in colls)
         {

@@ -9,7 +9,7 @@ public class MYGizmos : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = color;//±âÁî¸ğ »ö»ó ¼³Á¤
-        Gizmos.DrawSphere(transform.position, radius);//±¸Ã¼ ¸ğ¾çÀÇ ±âÁî¸ğ, »ı¼ºÀÎÀÚ´Â (»ı¼ºÀ§Ä¡,¹İÁö¸§)
+        Gizmos.color = color;//ê¸°ì¦ˆëª¨ ìƒ‰ìƒ ì„¤ì •
+        Gizmos.DrawSphere(transform.position, radius);//êµ¬ì²´ ëª¨ì–‘ì˜ ê¸°ì¦ˆëª¨, ìƒì„±ì¸ìëŠ” (ìƒì„±ìœ„ì¹˜,ë°˜ì§€ë¦„)
     }
 }

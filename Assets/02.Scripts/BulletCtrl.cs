@@ -5,14 +5,14 @@ using UnityEngine;
 public class BulletCtrl : MonoBehaviour
 {
     public float damage = 20.0f;
-    public float force = 1500.0f;//ÃÑ¾ËÀÇ Èû.
+    public float force = 1500.0f;//ì´ì•Œì˜ í˜.
 
     private Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //ÃÑ¾ËÀÇ ÀüÁø ¹æÇâÀ¸·Î ÈûÀ» °¡ÇÑ´Ù.
+        //ì´ì•Œì˜ ì „ì§„ ë°©í–¥ìœ¼ë¡œ í˜ì„ ê°€í•œë‹¤.
         rb.AddForce(transform.forward * force);
     }
 

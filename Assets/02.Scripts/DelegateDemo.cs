@@ -4,41 +4,41 @@ using UnityEngine;
 
 public class DelegateDemo : MonoBehaviour
 {
-    delegate float SumHandler(float a, float b);//µ¨¸®°ÔÀÌÆ® ±âº» Çü½Ä.
-    SumHandler sumHandler;//À§ÀÇ µ¨¸®°ÔÀÌÆ®ÀÇ ¸í¸í
+    delegate float SumHandler(float a, float b);//ë¸ë¦¬ê²Œì´íŠ¸ ê¸°ë³¸ í˜•ì‹.
+    SumHandler sumHandler;//ìœ„ì˜ ë¸ë¦¬ê²Œì´íŠ¸ì˜ ëª…ëª…
 
-    float Sum(float a, float b)//µ¨¸®°ÔÀÌÆ®¿Í Çü½ÄÀ» ¬Ãá ÇÔ¼ö.
+    float Sum(float a, float b)//ë¸ë¦¬ê²Œì´íŠ¸ì™€ í˜•ì‹ì„ ë§Ÿì¶˜ í•¨ìˆ˜.
     {
         return a + b;
     }
-    float Minus (float a, float b)//µ¨¸®°ÔÀÌÆ®¿Í Çü½ÄÀ» ¬Ãá ÇÔ¼ö2.
+    float Minus (float a, float b)//ë¸ë¦¬ê²Œì´íŠ¸ì™€ í˜•ì‹ì„ ë§Ÿì¶˜ í•¨ìˆ˜2.
     {
         return a - b;
     }
     void Start()
     {
-        sumHandler = Sum;//Çü½ÄÀ» ¬Ãá ÇÔ¼ö¸¦ µ¨¸®°ÔÀÌÆ®¿¡ ÇÒ´ç.
-        float sum = sumHandler(10.0f, 5.0f);//ÇÒ´çµÈ µ¨¸®°ÔÀÌÆ®¿¡ ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ°í,±×°ÍÀ» sumÀÌ¶ó ¸í¸í.
+        sumHandler = Sum;//í˜•ì‹ì„ ë§Ÿì¶˜ í•¨ìˆ˜ë¥¼ ë¸ë¦¬ê²Œì´íŠ¸ì— í• ë‹¹.
+        float sum = sumHandler(10.0f, 5.0f);//í• ë‹¹ëœ ë¸ë¦¬ê²Œì´íŠ¸ì— íŒŒë¼ë¯¸í„°ë¥¼ ì§€ì •í•˜ê³ ,ê·¸ê²ƒì„ sumì´ë¼ ëª…ëª….
         Debug.Log($"Sum = {sum}");
 
         sumHandler = Minus;
         float minus = sumHandler(10.0f, 5.0f);
         Debug.Log($"Minus = {minus}");
         
-        //¸ÖÆ¼ÄÉ½ºÆÃ
+        //ë©€í‹°ì¼€ìŠ¤íŒ…
         sumHandler += Sum;
         sumHandler += Minus;
 
-        //¶÷´Ù½ÄÀ¸·Î ±æÀÌ¸¦ ÁÙ¿©º¸ÀÚ.
+        //ëžŒë‹¤ì‹ìœ¼ë¡œ ê¸¸ì´ë¥¼ ì¤„ì—¬ë³´ìž.
         sumHandler = (float a, float b) => (a + b);
         float sum2 = sumHandler(10.0f, 5.0f);
         Debug.Log($"Sum2 = {sum2}");
 
-        //¹«¸í ¸Þ¼­µå·Î ±æÀÌ¸¦ ÁÙ¿©º¸ÀÚ/
-        sumHandler = delegate (float a, float b) { return a + b; };//¼¼¹ÌÅ¬·Ð ÁÖÀÇ
+        //ë¬´ëª… ë©”ì„œë“œë¡œ ê¸¸ì´ë¥¼ ì¤„ì—¬ë³´ìž/
+        sumHandler = delegate (float a, float b) { return a + b; };//ì„¸ë¯¸í´ë¡  ì£¼ì˜
         float sum3 = sumHandler(2.0f, 3.0f);
         Debug.Log($"Sum3 = {sum3}");
 
-        sumHandler = (float a, float b) => (a - b);//¶÷´Ù½Ä »©±â¹öÁ¯.
+        sumHandler = (float a, float b) => (a - b);//ëžŒë‹¤ì‹ ë¹¼ê¸°ë²„ì ¼.
     }
 }
