@@ -19,7 +19,6 @@ public class BarrelCtrl : MonoBehaviour
     #endregion
 
     int hitCount = 0;//총알 맞은 횟수 누적시킬 변수
-    // Start is called before the first frame update
     void Start()
     {
         tr = GetComponent<Transform>();

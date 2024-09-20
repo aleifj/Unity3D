@@ -13,9 +13,7 @@ public class FireCtrl : MonoBehaviour
     public AudioClip fireSfx;//오디오 음원
 
     private new AudioSource audio;
-    private MeshRenderer muzzleFlash;
-    // Start is called before the first frame update
-    void Start()
+    private MeshRenderer muzzleFlash;    void Start()
     {
         audio = GetComponent<AudioSource>();
         //FirePos 하위에 MuzzleFlash의 Material컴포넌트를 가져옴.
@@ -23,8 +21,6 @@ public class FireCtrl : MonoBehaviour
         //enabled:활성화, 처음 시작할 때 비활성화.
         muzzleFlash.enabled = false; 
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

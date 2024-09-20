@@ -13,13 +13,10 @@ public class FollowCam : MonoBehaviour
     public float damping = 10.0f;//반응 속도
     public float targetOffset = 2.0f;//카메라LookAt의 Offset값
     private Vector3 velocity = Vector3.zero;//smoothDamp에서 사용할 변수.
-    // Start is called before the first frame update
     void Start()
     {
         camTr = GetComponent<Transform>();
     }
-
-    // Update is called once per frame
     void LateUpdate()
     {   
      //추적해야 할 대상의 뒤로 distance만큼 이동
