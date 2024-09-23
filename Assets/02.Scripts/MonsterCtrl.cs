@@ -54,8 +54,8 @@ public class MonsterCtrl : MonoBehaviour
         //추적대상(PLAYER)의 Transform할당
         playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();
 
-        //네비게이션의 목적지는 player의 위치값.
-        //agent.destination = playerTr.position;
+        /*네비게이션의 목적지는 player의 위치값.
+          agent.destination = playerTr.position;*/
 
         //bloodEffect Prefab불러오기
         bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");

@@ -99,6 +99,8 @@ public class PlayerCtrl : MonoBehaviour
             monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
         }*/
         OnPlayerDie();//주인공 사망 이벤트 호출(발생).
+        //게임매니저 script의 isGameOver Property 값을 변경.
+        GameObject.Find("GameMgr").GetComponent<GameManager>().IsGameOver = true;
     }
     void DisplayHealth()
     {
