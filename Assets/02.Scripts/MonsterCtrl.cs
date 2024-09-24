@@ -36,9 +36,23 @@ public class MonsterCtrl : MonoBehaviour
 
     private int hp = 100;
 
+    private void Awake()
+    {
+        monsterTr = GetComponent<Transform>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+
+        playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();//추적대상(PLAYER)의 Transform할당
+
+        bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");//bloodEffect Prefab불러오기
+    }
     private void OnEnable()
     {//스크립트가 활성화 될 때 마다 호출되는 함수.이벤트 연결 할거임.
         PlayerCtrl.OnPlayerDie += this.OnPlayerDie;//이벤트 발생 시 수행할 함수 연결.this생략 가능.
+
+        StartCoroutine(CheckmonsterState());//몬스터의 상태를 체크하는 코루틴 함수.
+        
+        StartCoroutine(MonsterAction());//몬스터의 행동를 체크하는 코루틴 함수.
     }
     private void OnDisable()
     {//스크립트가 비활성화 될 때 마다 호출되는 함수.이벤트 연결 끊을거임.
@@ -47,28 +61,14 @@ public class MonsterCtrl : MonoBehaviour
 
     void Start()
     {
-        monsterTr = GetComponent<Transform>();
-        agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-
-        //추적대상(PLAYER)의 Transform할당
-        playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();
-
         /*네비게이션의 목적지는 player의 위치값.
           agent.destination = playerTr.position;*/
-
-        //bloodEffect Prefab불러오기
-        bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
-        //몬스터의 상태를 체크하는 코루틴 함수.
-        StartCoroutine(CheckmonsterState());
-        //몬스터의 행동를 체크하는 코루틴 함수.
-        StartCoroutine(MonsterAction());
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("BULLET"))
         {
-            //충돌한 총알을 삭제/
+            //충돌한 총알을 삭제
             Destroy(collision.gameObject);
             anim.SetTrigger(hashHit);//피격리액션 실행.
 
@@ -120,6 +120,19 @@ public class MonsterCtrl : MonoBehaviour
                     {
                         item.enabled = false;
                     }
+
+                    yield return new WaitForSeconds(3.0f);//일정 시간 대기 후 오브젝트 풀링으로 환원.
+
+                    hp = 100;
+                    isDie = false;//사망 후 다시 사용할 때를 위해 hp값 초기화.
+
+                    GetComponent<CapsuleCollider>().enabled = true;//몬스터의 Collider컴포넌트 활성화.
+                    foreach(var item in sc)//몬스터 공격수단 활성화.
+                    {
+                        item.enabled = false;
+                    }
+                    this.state = State.IDLE;//몬스터 부활 시 바로 죽어버려서 넣어둠.
+                    this.gameObject.SetActive(false);//몬스터를 비활성화.
                     break;
             }
             yield return new WaitForSeconds(0.3f);
