@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
     public List<Transform> points = new List<Transform>();//몬스터가 출현할 위치를 저장할 List타입 변수.
-
     public List<GameObject> monsterPool = new List<GameObject>();//몬스터를 미리 생성해 저장할 리스트 자료형.
     public int maxMonsters = 10;//오브젝트 풀에 생성할 몬스터의 최대 갯수.
     public GameObject Monster;
@@ -23,7 +24,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public static GameManager instance = null;
+    public static GameManager instance = null;//싱글턴 인스턴스 선언.
+
+    public TMP_Text scoreText;//스코어 텍스트 연결할 변수
+    private int totScore= 0;//누적 점수 기록할 변수
     private void Awake()
     {
         if(instance == null)//instance가 할당되지 않았을 경우.
@@ -49,6 +53,8 @@ public class GameManager : MonoBehaviour
             points.Add(point);
         }
         InvokeRepeating("CreateMonster",2.0f,createTime);//일정 간격으로 함수 호출.
+        totScore = PlayerPrefs.GetInt("TOT_SCORE", 0);//스코어 점수 출력.
+        DisplayScore(0);
     }
 
     void CreateMonster()
@@ -82,4 +88,23 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+
+    /// <summary>
+    /// 점수를 누적하고 출력하는 함수.
+    /// </summary>
+    /// <param name="score"></param>
+    public void DisplayScore(int score)
+    {
+        totScore += score;
+        scoreText.text = $"<color=#00ff00>SCORE : </color> <color=#ff0000>{totScore:#,##0}</color>";
+
+        PlayerPrefs.SetInt("TOT_SCORE", totScore);//스코어 저장
+    }
+#if UNITY_EDITOR
+    [MenuItem("SpaceShooter/Reset Score", false, 1)]
+    public static void ResetPlayerPrefs()//스코어 리셋
+    {
+        PlayerPrefs.DeleteAll(); ;
+    }
+#endif
 }
