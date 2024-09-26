@@ -13,7 +13,10 @@ public class FireCtrl : MonoBehaviour
     public AudioClip fireSfx;//오디오 음원
 
     private new AudioSource audio;
-    private MeshRenderer muzzleFlash;    void Start()
+    private MeshRenderer muzzleFlash;
+
+    private RaycastHit hit;//raycast결과값을 저장하기 위한 구조체 선언.
+    void Start()
     {
         audio = GetComponent<AudioSource>();
         //FirePos 하위에 MuzzleFlash의 Material컴포넌트를 가져옴.
@@ -23,9 +26,20 @@ public class FireCtrl : MonoBehaviour
     }
     void Update()
     {
+        Debug.DrawRay(firePos.position, firePos.forward * 10.0f, Color.green);//ray를 시각적으로 보려고 사용.
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+
+            if (Physics.Raycast(firePos.position,//광선의 발사 원점
+                                firePos.forward,//광선의 발사 방향
+                                        out hit,//광선에 맞은 결과 데이터
+                                        10.0f,  //광선의 거리
+                                        1 << 6))//감지하는 범위인 레이어 마스크
+            {
+                Debug.Log($"Hit = {hit.transform.name}");
+                hit.transform.GetComponent<MonsterCtrl>()?.OnDamage(hit.point, hit.normal);
+            }
         }
     }
     void Fire()

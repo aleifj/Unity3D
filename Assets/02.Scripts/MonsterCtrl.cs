@@ -15,7 +15,7 @@ public class MonsterCtrl : MonoBehaviour
         DIE
     }
     private const int MONSTER_MAX_HP = 100;//몬스터 풀피.
-    private const int MONSTER_HIT_DAMAGE = 10;//몬스터가 받을 데미지.
+    private const int MONSTER_HIT_DAMAGE = 30;//몬스터가 받을 데미지.
     private const int MONSTER_SCORE = 50;//몬스터 처치시 점수.
     public State state = State.IDLE;//몬스터의 현재 상태.
     public float traceDist = 10.0f;//추적 사정거리.
@@ -73,10 +73,14 @@ public class MonsterCtrl : MonoBehaviour
         {
             //충돌한 총알을 삭제
             Destroy(collision.gameObject);
+        }
+    }
+    public void OnDamage(Vector3 pos, Vector3 normal)
+    {
             anim.SetTrigger(hashHit);//피격리액션 실행.
 
-            Vector3 pos = collision.GetContact(0).point;//총알의 충돌 지점
-            Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);//총알의 충돌 지점의 법선벡터
+            //Vector3 pos = collision.GetContact(0).point;//총알의 충돌 지점
+            Quaternion rot = Quaternion.LookRotation(normal);//총알의 충돌 지점의 법선벡터
             ShowBloodEffect(pos, rot);//혈흔효과이펙트 함수 호출
 
             hp -= MONSTER_HIT_DAMAGE;
@@ -85,7 +89,7 @@ public class MonsterCtrl : MonoBehaviour
                 state = State.DIE;
                 GameManager.instance.DisplayScore(MONSTER_SCORE);//몬스터 처치시 50점 획득.
             }
-        }
+        
     }
     void ShowBloodEffect(Vector3 pos, Quaternion rot)
     {//혈흔 효과 생성
