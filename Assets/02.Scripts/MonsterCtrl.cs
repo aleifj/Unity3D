@@ -43,11 +43,23 @@ public class MonsterCtrl : MonoBehaviour
     {
         monsterTr = GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;//NavMeshAgent의 자동 회전 기능 비활성화.
         anim = GetComponent<Animator>();
 
         playerTr = GameObject.FindWithTag("PLAYER").GetComponent<Transform>();//추적대상(PLAYER)의 Transform할당
 
         bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");//bloodEffect Prefab불러오기
+    }
+
+    private void Update()
+    {
+        if(agent.remainingDistance >= 2.0f)//목적지까지 남은 거리로 회전 여부 판단
+        {
+            Vector3 direction = agent.desiredVelocity;//에이전트의 이동 방향
+            Quaternion rot = Quaternion.LookRotation(direction);//회전각도(쿼터니언) 산출
+            monsterTr.rotation = Quaternion.Slerp(monsterTr.rotation,rot,Time.deltaTime * 10.0f);//구면 선형보간 함수로 부드러운 회전 처리
+            //Quaternion.Slerp(시작Quaternion값, 도착Quaternion값, 보간값(0~1)(0에 가까울 수록 시작에 가까움 1에 가까울 수록 도착에 가까움))
+        }
     }
     private void OnEnable()
     {//스크립트가 활성화 될 때 마다 호출되는 함수.이벤트 연결 할거임.
